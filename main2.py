@@ -131,9 +131,9 @@ class Ball:
      # Method to move the ball based on calculated velocity
      def move(self):
           if self.is_moving:
-               # Move the ball based on the velocity
-               self.x += self.vel_x
-               self.y += self.vel_y
+               # Move the ball based on the velocity and angle
+               self.x += self.vel_x * math.cos(angle)
+               self.y += self.vel_y * math.sin(angle)
                self.pos = (self.x, self.y)
 
                # Apply friction to slow the ball down
@@ -148,17 +148,20 @@ class Ball:
 
      # Method to shoot the ball in the direction of the line
      def shoot(self):
+          global angle
+
+          # Gets the x and y component of the vector
           direction_x = m_posA[0] - self.x
           direction_y = m_posA[1] - self.y
+
+          # Gets the whole angle (all 4 quadrants instead of 2)
+          angle = math.atan2(direction_y, direction_x)
           distance = math.hypot(direction_x, direction_y)
 
-          # Normalize the direction and apply the velocity
-          if distance > 0:
-               direction_x /= distance
-               direction_y /= distance
+          # Gets the preferred velocity (Its just my preference, no special logic)
+          self.vel_x = math.sqrt(distance)
+          self.vel_y = math.sqrt(distance)
 
-          self.vel_x = direction_x * math.sqrt(distance)  # Speed multiplier for ball movement
-          self.vel_y = direction_y * math.sqrt(distance)
           self.is_moving = True
 
      # Method to handle deflection
