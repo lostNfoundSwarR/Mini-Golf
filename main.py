@@ -1,3 +1,5 @@
+# You are free to add your own levels
+
 import pygame  # type: ignore
 import math
 import time
@@ -268,6 +270,7 @@ def count_down():
           time_left -= 1
 
      try:
+          # Forcefully shuts down the thread (It may not work sometimes rarely)
           raise ValueError("Something went wrong")
      except:
           if current_mode in list(lvl_idxs.keys()):
@@ -417,6 +420,7 @@ parts = [
      "END_MENU"
 ]
 
+# Keeps the indexes of each playable levels
 lvl_idxs = {
      "LEVEL_1" : 0,
      "LEVEL_2" : 1,
@@ -459,7 +463,8 @@ while True:
 
      if current_mode not in ["START_MENU", "GAME_OVER_MENU", "END_MENU", "LEVEL_5"]:
           timer_indicator = font.render(str(time_left), True, "BLACK")
-          
+
+          # Adjusts the timer and button position for some levels
           if current_mode == "LEVEL_3":
                reset_btn.rect = pygame.Rect(50, 100, reset_btn.width, reset_btn.height)
                screen.blit(timer_indicator, (50, 50))
@@ -471,6 +476,7 @@ while True:
 
           reset_btn.draw(screen)
 
+          # May give an unexpected error sometimes, due to which try-except is used
           try:
                if current_mode not in ["GAME_OVER_MENU", "START_MENU"]:
                     level_index = lvl_idxs[current_mode]
